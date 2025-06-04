@@ -1,0 +1,66 @@
+{% load performance_extras %}
+<div class="max-h-[500px] overflow-y-auto overflow-x-auto rounded-lg shadow border border-gray-200">
+  <table class="min-w-[800px] w-full text-sm text-left whitespace-nowrap">
+    <thead class="bg-gray-50 text-xs text-gray-700 uppercase sticky top-0 z-10">
+      <tr>
+        {% for header in headers %}
+          <th class="px-4 py-3 border-b border-gray-200 font-medium bg-gray-100">{{ header }}</th>
+        {% endfor %}
+          <th class="px-4 py-3 border-b border-gray-200 font-medium bg-gray-100">Action</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for row, show_button, faculty in rows %}
+        <tr class="hover:bg-gray-50 transition">
+          {% for cell in row %}
+            {% if forloop.first %}
+              <td class="px-4 py-2 text-gray-800 border-b">
+                {{ cell|faculty_shortname }}
+              </td>
+            {% else %}
+              <td class="px-4 py-2 text-gray-800 border-b">{{ cell }}</td>
+            {% endif %}
+          {% endfor %}
+
+          {% if show_button %}
+            <td class="px-4 py-2 border-b">
+              <button 
+                hx-get="{% url 'analyze_faculty_kpi' faculty %}"
+                hx-target="#modal-content"
+                hx-trigger="click"
+                hx-swap="innerHTML"
+                class="text-blue-600 hover:underline"
+              >Analyze</button>
+            </td>
+          {% else %}
+            <td class="px-4 py-2 border-b"></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+</div>
+
+<!-- Modal container -->
+<div id="modal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6" id="modal-content">
+    <!-- HTMX will load content here -->
+  </div>
+</div>
+
+<script>
+  document.body.addEventListener("htmx:afterSwap", (e) => {
+    if (e.target.id === "modal-content") {
+      document.getElementById("modal").classList.remove("hidden");
+    }
+  });
+
+  document.body.addEventListener("click", (e) => {
+    if (e.target.id === "modal") {
+      e.target.classList.add("hidden");
+    }
+  });
+</script>
+
+

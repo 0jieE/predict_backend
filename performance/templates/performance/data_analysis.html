@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load performance_extras %}
+
+{% block title %}Faculty Performance Dashboard{% endblock %}
+
+{% block content %}
+<div class="p-6 max-w-7xl mx-auto">
+    <div class="flex gap-4 py-4">
+        <h1 class="text-2xl font-bold mb-4">Faculty Performance Table</h1>
+        <button 
+            onclick="showModal('kpi-modal')"
+            class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded shadow"
+            hx-get="{% url 'kpi_regression' %}" 
+            hx-target=".kpi-content"
+            hx-swap="innerHTML"
+            hx-trigger="click"
+        >
+            Analyze KPI
+        </button>
+    </div>
+    <!-- Table will load dynamically here -->
+    <div id="table-area" 
+         hx-get="{% url 'performance_table' %}" 
+         hx-trigger="load"
+         hx-target="#table-area"
+         hx-swap="innerHTML">
+        <p class="text-gray-500">Loading performance data...</p>
+    </div>
+</div>
+
+<!-- Modal Container -->
+<div id="kpi-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 relative modal-content">
+        <button onclick="hideModal('kpi-modal')" class="absolute top-3 right-4 text-gray-500 hover:text-red-500">✕</button>
+        <div class="kpi-content max-h-[90vh] overflow-y-auto">
+
+        </div>
+        <!-- KPI content loads here -->
+    </div>
+</div>
+
+
+
+{% endblock %}

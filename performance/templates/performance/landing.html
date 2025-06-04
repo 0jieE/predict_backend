@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Performance Dashboard{% endblock %}
+
+{% block content %}
+
+    <section class="text-center py-20 px-4 " style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+        <h2 class="text-3xl font-semibold text-white mb-1">Empowering Education Through Data</h2>
+        <p class="text-sm text-white mb-3 max-w-xl mx-auto">
+            Upload faculty performance data to gain insights, visualize trends, and predict teaching outcomes.
+        </p>
+    </section>
+
+    <!-- Features -->
+    <section class="bg-white py-20 px-4">
+        <div class="text-center">
+            {% if csv_filename %}
+                <p class="text-gray-700 font-bold mb-2">
+                File:
+                <a href="#" class="inline-block border border-blue-600 bg-blue-50 text-blue-800 px-3 py-1 rounded font-medium hover:bg-blue-100 transition">
+                    {{ csv_filename }}
+                </a>
+                <a href="{% url 'start_analysis' %}" class="text-yellow-500 font-bold hover:underline ml-2">Proceed -></a>
+                </p>
+                <button onclick="showModal('uploadModal')" class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700 transition">
+                Re-Select File
+                </button>
+            {% else %}
+                <p class="text-gray-600 mb-2">No file selected</p>
+                <button onclick="showModal('uploadModal')" class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700 transition">
+                Select File
+                </button>
+            {% endif %}
+        </div>
+        <br>
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 p-4 rounded shadow">
+                <h3 class="text-lg font-semibold mb-1">Data Upload</h3>
+                <p class="text-gray-600 text-sm">
+                    Upload faculty records in CSV format to begin your analysis.     
+                </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded shadow">
+                <h3 class="text-lg font-semibold mb-1">KPI Analytics</h3>
+                <p class="text-gray-600 text-sm">Identify key performance indicators using statistical and ML methods.</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded shadow">
+                <h3 class="text-lg font-semibold mb-1">Performance Prediction</h3>
+                <p class="text-gray-600 text-sm">Predict faculty performance using deep learning models.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <button onclick="hideModal('uploadModal')" class="absolute top-3 right-4 text-gray-500 hover:text-red-500">✕</button>
+            <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Upload CSV File</h2>
+            <form id="uploadForm" action="{% url 'upload_csv' %}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <input id="csvInput" type="file" name="csv" accept=".csv" class="block w-full text-sm text-gray-700 border border-gray-300 rounded px-3 py-2" required />
+            <div id="csvPreview" class="text-xs text-gray-700 mt-2 whitespace-pre-wrap bg-gray-100 p-2 rounded max-h-48 overflow-auto font-mono border border-gray-300"></div>
+            <div class="text-center">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Upload</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fileInput = document.getElementById('csvInput');
+            const preview = document.getElementById('csvPreview');
+
+            fileInput.addEventListener('change', function () {
+                const file = fileInput.files[0];
+
+                if (!file || !file.name.endsWith('.csv')) {
+                    preview.textContent = 'Please select a valid CSV file.';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const text = e.target.result;
+                    const lines = text.split('\n').slice(0, 10).join('\n');
+                    preview.textContent = lines || "CSV file is empty.";
+                };
+                reader.readAsText(file);
+            });
+        });
+    </script>
+{% endblock %}
+

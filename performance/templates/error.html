@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+  <div class="max-w-3xl mx-auto p-6 bg-red-100 rounded shadow mt-8">
+    <h1 class="text-xl font-bold mb-4 text-red-700">Error</h1>
+    <p class="text-red-800">{{ message }}</p>
+    <a href="{% url 'start_analysis' %}" class="text-blue-600 underline mt-4 inline-block">Go back</a>
+  </div>
+{% endblock %}

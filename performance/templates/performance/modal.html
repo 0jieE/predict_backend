@@ -1,0 +1,29 @@
+<!-- How It Works Modal -->
+<div id="howItWorksModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative overflow-y-auto max-h-[90vh]">
+        <button onclick="hideModal('howItWorksModal')" class="absolute top-3 right-4 text-gray-500 hover:text-red-500">✕</button>
+        <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">How It Works</h2>
+        <div class="space-y-4 text-sm text-gray-700">
+            <div>
+                <h3 class="font-semibold text-blue-700">1. Data Processing & Cleaning</h3>
+                <p>Uploaded CSV files are processed using <strong>Pandas</strong>: column names are cleaned, and data types are converted to ensure valid analysis. Missing or invalid values are handled accordingly.</p>
+            </div>
+            <div>
+                <h3 class="font-semibold text-blue-700">2. Statistical Analysis & KPI Identification</h3>
+                <p>We perform initial data processing steps such as handling missing values, converting data types, and inspecting column contents to prepare the dataset for analysis. Then, we apply <strong>Ordinary Least Squares (OLS) Regression</strong> using the <strong>statsmodels</strong> library, which is both a statistical method and a simple predictive model. This regression examines the relationship between faculty performance and predictors like workload, number of preparations, and deloading status, helping us identify key performance indicators (KPIs) based on statistical significance (<strong>p-values</strong>), effect size (<strong>coefficients</strong>), and overall model fit (<strong>R-squared</strong>).</p>
+            </div>
+            <div>
+                <h3 class="font-semibold text-blue-700">3. Advanced KPI Modeling (Planned)</h3>
+                <p><em>Coming soon:</em> Integrate <strong>machine learning models</strong> like Random Forest and Logistic Regression to automatically rank and predict important KPIs from multiple features.</p>
+            </div>
+            <div>
+                <h3 class="font-semibold text-blue-700">4. Predictive Forecasting (Planned)</h3>
+                <p><em>Coming soon:</em> Use <strong>deep learning models</strong> (e.g., TensorFlow or PyTorch) to forecast faculty performance trends over time for planning and intervention purposes.</p>
+            </div>
+            <div>
+                <h3 class="font-semibold text-blue-700">5. Visualization</h3>
+                <p>Generate interactive tables and visual summaries to help administrators easily interpret the findings and make data-driven decisions.</p>
+            </div>
+        </div>
+    </div>
+</div>

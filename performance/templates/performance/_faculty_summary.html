@@ -1,0 +1,44 @@
+{% load performance_extras %}
+<h2 class="text-xl font-semibold mb-4 border-b pb-2">Faculty KPI Summary</h2>
+
+<ul class="space-y-2 text-gray-800">
+  {% for key, value in summary.items %}
+    <li>
+      <span class="font-semibold text-gray-900">{{ key|replace_underscore }}:</span>
+      <span>{{ value }}</span>
+    </li>
+  {% endfor %}
+</ul>
+
+{% if predictions %}
+  <h3 class="text-lg font-semibold mt-6 mb-2 border-b pb-1">Per-Semester Prediction</h3>
+  <table class="min-w-full text-sm text-left text-gray-700 border">
+    <thead class="bg-gray-100 text-xs uppercase">
+      <tr>
+        <th class="px-4 py-2">Semester</th>
+        <th class="px-4 py-2">Actual Eval</th>
+        <th class="px-4 py-2">Predicted Eval</th>
+        <th class="px-4 py-2">Difference</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in predictions %}
+        <tr>
+          <td class="px-4 py-2">{{ entry.semester }}</td>
+          <td class="px-4 py-2">{{ entry.actual }}</td>
+          <td class="px-4 py-2">{{ entry.predicted }}</td>
+          <td class="px-4 py-2 {% if entry.difference > 0 %}text-green-600{% elif entry.difference < 0 %}text-red-600{% endif %}">
+            {{ entry.difference }}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+<button
+  onclick="document.getElementById('modal').classList.add('hidden')"
+  class="mt-6 px-5 py-2 bg-gray-200 hover:bg-gray-300 rounded transition"
+>
+  Close
+</button>
